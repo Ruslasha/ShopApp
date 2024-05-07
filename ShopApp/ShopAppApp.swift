@@ -11,7 +11,11 @@ import SwiftUI
 struct ShopAppApp: App {
     var body: some Scene {
         WindowGroup {
-            GetStartedView()
+            if #available(iOS 16.0, *) {
+                GetStartedView()
+            } else {
+                EmptyView()
+            }
         }
     }
 }

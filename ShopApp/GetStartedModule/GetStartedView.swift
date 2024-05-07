@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct GetStartedView: View {
     var body: some View {
         NavigationView {
@@ -25,6 +26,7 @@ struct GetStartedView: View {
                     .ignoresSafeArea(.all, edges: .all)
             )
         }
+
     }
 
     private var startedButton: some View {
@@ -87,5 +89,9 @@ struct LineView: View {
 }
 
 #Preview {
-    GetStartedView()
+    if #available(iOS 16.0, *) {
+        GetStartedView()
+    } else {
+        EmptyView()
+    }
 }
