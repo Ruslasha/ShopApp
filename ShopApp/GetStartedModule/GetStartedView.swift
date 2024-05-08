@@ -9,6 +9,16 @@ import SwiftUI
 
 @available(iOS 16.0, *)
 struct GetStartedView: View {
+
+    private enum Constants {
+            static let title169 = "169.ru"
+            static let startPicture = "startPicture"
+            static let signInText = "Sign in here"
+            static let getStartedText = "Get Started"
+            static let dontHaveAccountText = "Don't have an account?"
+            static let urlPicture = "https://st3.depositphotos.com/9881654/14953/i/450/depositphotos_149530204-stock-illustration-cute-living-room.jpg"
+        }
+
     var body: some View {
         NavigationView {
             VStack {
@@ -29,9 +39,14 @@ struct GetStartedView: View {
 
     }
 
+    @State private var isShowDetail = false
+
     private var startedButton: some View {
-        NavigationLink(destination: AuthorisationView()) {
-            Text("Get Started")
+
+        Button {
+                    isShowDetail = true
+        } label: {
+            Text(Constants.getStartedText)
                 .foregroundStyle(
                     LinearGradient(colors: [Color.green, Color.green.opacity(0.2)], startPoint: .top, endPoint: .bottom)
                 )
@@ -41,6 +56,9 @@ struct GetStartedView: View {
                 .font(.system(size: 20))
                 .frame(width: 300, height: 55)
         }
+        .fullScreenCover(isPresented: $isShowDetail, content: {
+            DetailView()
+        })
         .background(Color.white)
         .clipShape(Capsule())
         .shadow(color: .gray, radius: 5, x: 0, y: 4)
@@ -50,32 +68,50 @@ struct GetStartedView: View {
         VStack {
             Spacer()
                 .frame(height: 60)
-            Text("169.ru")
+            Text(Constants.title169)
                 .font(.system(size: 40))
                 .bold()
                 .foregroundStyle(.white)
-            Image("startPicture")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
+            asyncImageView
             Spacer()
                 .frame(height: 116)
         }
     }
 
+    private var asyncImageView: some View {
+            AsyncImage(url: URL(string: Constants.urlPicture)) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(maxWidth: 296, maxHeight: 212)
+                case .failure(_):
+                    Image(systemName: Constants.startPicture)
+                @unknown default:
+                    Image(systemName: Constants.startPicture)
+                }
+            }
+        }
+
     private var bottomItems: some View {
         VStack {
             Spacer()
                 .frame(height: 75)
-            Text("Don't have an account?")
+            Text(Constants.dontHaveAccountText)
                 .font(.system(size: 16))
                 .bold()
                 .foregroundStyle(.white)
             Spacer()
                 .frame(height: 12)
-            Text("Sing in here")
-                .font(.system(size: 28))
-                .bold()
-                .foregroundStyle(.white)
+            NavigationLink(destination: AuthorisationView()) {
+                Text(Constants.signInText)
+                    .font(.system(size: 28))
+                    .bold()
+                    .foregroundStyle(.white)
+            }
         }
     }
 }

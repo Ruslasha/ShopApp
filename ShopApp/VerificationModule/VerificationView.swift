@@ -45,6 +45,10 @@ struct VerificationView: View {
             mailImageView
             textFields
             smsLabels
+            continueButtonView
+            sendSmsButton
+            Divider()
+                .frame(maxWidth: 180, maxHeight: 1)
             Spacer()
         }
         .frame(width: UIScreen.main.bounds.width)
@@ -52,6 +56,65 @@ struct VerificationView: View {
         .ignoresSafeArea(.all, edges: .bottom)
 
     }
+
+    @ObservedObject private var viewModel = VerificationViewModel()
+    @State private var verificationTexts = ["", "", "", ""]
+
+    private var sendSmsButton: some View {
+        VStack {
+            Text("Didn’t receive sms")
+                .font(.system(size: 16))
+                .foregroundStyle(.gray)
+                .frame(height: 20)
+            Button(action: {
+                viewModel.smsAlertIsShow = true
+            }) {
+                Text("Send sms again")
+                    .font(.title)
+                    .bold()
+                    .foregroundStyle(.gray)
+            }
+            .alert("Fill in from message", isPresented: $viewModel.smsAlertIsShow, actions: {
+                Button("Cancel", role: .cancel, action: {})
+                Button("Ok", action: {
+                    pasteSmsText(String(viewModel.smsText))
+                })
+            }, message: {
+                Text(String(viewModel.smsText))
+            })
+        }
+    }
+
+    private func pasteSmsText(_ text: String) {
+            for (index, value) in text.enumerated() {
+                verificationTexts[index] = String(value)
+            }
+        numberOneCode = verificationTexts[0]
+        numberTwoCode = verificationTexts[1]
+        numberThreeCode = verificationTexts[2]
+        numberFourCode = verificationTexts[3]
+        }
+
+    private var continueButtonView: some View {
+        VStack {
+            Spacer()
+                .frame(height: 20)
+            Button {} label: {
+                Text("Continue")
+                    .padding(.vertical, 16)
+                    .padding(.horizontal, 100)
+                    .font(.title2.bold())
+                    .background(
+                        LinearGradient(colors: [Color.green.opacity(0.2), Color.green], startPoint: .leading, endPoint: .trailing)
+                    )
+                    .shadow(radius: 10, y: 5)
+                    .foregroundStyle(.white)
+
+            }
+            .cornerRadius(27)
+        }
+    }
+
 
     private var smsLabels: some View {
         VStack {
@@ -61,9 +124,11 @@ struct VerificationView: View {
                 .font(.system(size: 20))
                 .bold()
                 .foregroundStyle(.gray)
+                .frame(height: 30)
             Text("message to get verification code")
                 .font(.system(size: 16))
                 .foregroundStyle(.gray)
+                .frame(height: 20)
         }
     }
 

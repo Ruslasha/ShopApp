@@ -29,14 +29,14 @@ struct AuthorisationView: View {
 
         }
         .navigationBarBackButtonHidden(true)
-//        .navigationBarItems(leading:
-//                                Button(action: {
-//            presentationMode.wrappedValue.dismiss()
-//        }, label: {
-//            Image(systemName: "chevron.left")
-//        })
-//                                    .foregroundStyle(.gray)
-//        )
+        //        .navigationBarItems(leading:
+        //                                Button(action: {
+        //            presentationMode.wrappedValue.dismiss()
+        //        }, label: {
+        //            Image(systemName: "chevron.left")
+        //        })
+        //                                    .foregroundStyle(.gray)
+        //        )
     }
 
     private var mainView: some View {
@@ -80,7 +80,9 @@ struct AuthorisationView: View {
             })
             Spacer()
                 .frame(height: 18)
-            checkVerificationView
+            NavigationLink(destination: VerificationView()) {
+                checkVerificationView
+            }
             Divider()
                 .frame(maxWidth: 180, maxHeight: 1)
             Spacer()
@@ -170,6 +172,15 @@ struct AuthorisationView: View {
                     passwordIsFocused = false
                 }
             }
+            .onSubmit {
+                if passwordText.count < 6 {
+                    passwordAlertIsShow = true
+                }
+            }
+            .alert("Ошибка", isPresented: $passwordAlertIsShow, actions: {
+            }, message: {
+                Text("Пароль не может быть меньше 6 символов")
+            })
             Button(action: {
                 viewModel.passwordIsHide.toggle()
             }){
@@ -181,11 +192,19 @@ struct AuthorisationView: View {
 
     }
 
+    @State var movetoNextScreen: Int? = nil
     private var signUpButtonView: some View {
-        Button {} label: {
+        Button {
+            if passwordText.count < 6 {
+                passwordAlertIsShow = true
+                movetoNextScreen = 0
+            } else {
+                movetoNextScreen = 1
+            }
+        } label: {
             Text("Sing up")
-                .padding(.vertical, 20)
-                .padding(.horizontal, 120)
+                .padding(.vertical, 16)
+                .padding(.horizontal, 100)
                 .font(.title2.bold())
                 .background(
                     LinearGradient(colors: [Color.green.opacity(0.2), Color.green], startPoint: .leading, endPoint: .trailing)
@@ -195,58 +214,22 @@ struct AuthorisationView: View {
 
         }
         .cornerRadius(27)
+        .background(
+            NavigationLink(destination: VerificationView(), tag: 1,
+                           selection: $movetoNextScreen) { EmptyView() }
+        )
 
+        .alert("Ошибка", isPresented: $passwordAlertIsShow, actions: {
+        }, message: {
+            Text("Пароль должен быть больше 6 симоволов")
+        })
     }
-
-//    @State private var isActive = true
-//    @State private var isNextScreenShown = false
-//   @State private var shouldShowVerificationView = false
-//
-
-    @State var movetoNextScreen: Int? = nil
 
     private var checkVerificationView: some View {
 
-//        NavigationLink(destination: VerificationView(), isActive: $shouldShowVerificationView) {
-//            Text("Get Started")
-//                .font(.title)
-//                .bold()
-//                .foregroundStyle(.gray)
-//                .alert("Ошибка", isPresented: $passwordAlertIsShow, actions: {
-//                }, message: {
-//                    Text("Пароль должен быть больше 6 симоволов")
-//                })
-//        }
-//        .onAppear {
-//            if passwordText.count >= 6 {
-//                shouldShowVerificationView = true
-//                passwordAlertIsShow = false
-//            } else {
-//                passwordAlertIsShow = true
-//                shouldShowVerificationView = false
-//            }
-//        }
-        Button(action:  {
-            if passwordText.count < 6 {
-                passwordAlertIsShow = true
-                movetoNextScreen = 0
-            } else {
-                movetoNextScreen = 1
-            }
-            }) {
-              Text("Check Verification")
-                    .font(.title.bold())
-                    .foregroundStyle(.gray)
-            }
-            .background(
-               NavigationLink(destination: VerificationView(), tag: 1,
-                  selection: $movetoNextScreen) { EmptyView() }
-            )
-
-                            .alert("Ошибка", isPresented: $passwordAlertIsShow, actions: {
-                            }, message: {
-                                Text("Пароль должен быть больше 6 симоволов")
-                            })
+        Text("Check Verification")
+            .font(.title.bold())
+            .foregroundStyle(.gray)
 
     }
 
