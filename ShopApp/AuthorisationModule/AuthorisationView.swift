@@ -10,7 +10,25 @@ import SwiftUI
 @available(iOS 16.0, *)
 struct AuthorisationView: View {
 
+    enum Constants {
+        static let forgotText = "Forgot your password?"
+        static let phoneSupportText = "Телефон поддержки"
+        static let phoneSupport = "+7(948)345-34-23"
+        static let logInText = "Log in"
+        static let singUpText = "Sing up"
+        static let placeholderPhone = "+9(999)999-99-99"
+        static let placeholderDot = "*******"
+        static let errorText = "Ошибка"
+        static let passwordErrorText = "Пароль не может быть меньше 6 символов"
+        static let checkVerification = "Check Verification"
+    }
+
     @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var viewModel = AuthorisationViewModel()
+    @FocusState var phoneIsFocused: Bool
+    @FocusState var passwordIsFocused: Bool
+    @State var totalPasswordChars = 0
+    @State var lastPasswordText = ""
 
     var body: some View {
         NavigationView {
@@ -29,15 +47,12 @@ struct AuthorisationView: View {
 
         }
         .navigationBarBackButtonHidden(true)
-        //        .navigationBarItems(leading:
-        //                                Button(action: {
-        //            presentationMode.wrappedValue.dismiss()
-        //        }, label: {
-        //            Image(systemName: "chevron.left")
-        //        })
-        //                                    .foregroundStyle(.gray)
-        //        )
     }
+
+    @State private var phoneNumberText = ""
+    @State private var passwordText = ""
+    @State private var forgotAlertIsShow = false
+    @State private var passwordAlertIsShow = false
 
     private var mainView: some View {
         VStack {
@@ -69,14 +84,14 @@ struct AuthorisationView: View {
             Button(action: {
                 forgotAlertIsShow = true
             }) {
-                Text("Forgot your password?")
+                Text(Constants.forgotText)
                     .font(.system(size: 18))
                     .bold()
                     .foregroundStyle(.gray)
             }
-            .alert("Телефон поддержки", isPresented: $forgotAlertIsShow, actions: {
+            .alert(Constants.phoneSupportText, isPresented: $forgotAlertIsShow, actions: {
             }, message: {
-                Text("+7(948)345-34-23")
+                Text(Constants.phoneSupport)
             })
             Spacer()
                 .frame(height: 18)
@@ -103,7 +118,7 @@ struct AuthorisationView: View {
             .stroke(.appGray, lineWidth: 2)
             .frame(width: 150, height: 51)
             .overlay {
-                Text("Log in")
+                Text(Constants.logInText)
                     .foregroundStyle(
                         LinearGradient(colors: [Color.green, Color.green.opacity(0.2)], startPoint: .top, endPoint: .bottom)
                     )
@@ -119,7 +134,7 @@ struct AuthorisationView: View {
             .frame(width: 150, height: 53)
             .foregroundStyle(.appGray)
             .overlay {
-                Text("Sing up")
+                Text(Constants.singUpText)
                     .foregroundStyle(
                         LinearGradient(colors: [Color.green, Color.green.opacity(0.2)], startPoint: .top, endPoint: .bottom)
                     )
@@ -128,18 +143,8 @@ struct AuthorisationView: View {
         }
     }
 
-    @ObservedObject var viewModel = AuthorisationViewModel()
-    @State private var phoneNumberText = ""
-    @State private var passwordText = ""
-    @FocusState var phoneIsFocused: Bool
-    @FocusState var passwordIsFocused: Bool
-    @State var totalPasswordChars = 0
-    @State var lastPasswordText = ""
-    @State private var forgotAlertIsShow = false
-    @State private var passwordAlertIsShow = false
-
     private var phoneTextFieldView: some View {
-        TextField("+9(999)999-99-99", text: $phoneNumberText)
+        TextField(Constants.placeholderPhone, text: $phoneNumberText)
             .font(.title2)
             .bold()
             .onChange(of: phoneNumberText) { text in
@@ -155,10 +160,10 @@ struct AuthorisationView: View {
         HStack {
             Group {
                 if viewModel.passwordIsHide {
-                    SecureField("*******", text: $passwordText)
+                    SecureField(Constants.placeholderDot, text: $passwordText)
                         .font(.title2.bold())
                 } else {
-                    TextField("*******", text: $passwordText)
+                    TextField(Constants.placeholderDot, text: $passwordText)
                         .font(.title2.bold())
                 }
             }
@@ -172,15 +177,6 @@ struct AuthorisationView: View {
                     passwordIsFocused = false
                 }
             }
-            .onSubmit {
-                if passwordText.count < 6 {
-                    passwordAlertIsShow = true
-                }
-            }
-            .alert("Ошибка", isPresented: $passwordAlertIsShow, actions: {
-            }, message: {
-                Text("Пароль не может быть меньше 6 символов")
-            })
             Button(action: {
                 viewModel.passwordIsHide.toggle()
             }){
@@ -202,7 +198,7 @@ struct AuthorisationView: View {
                 movetoNextScreen = 1
             }
         } label: {
-            Text("Sing up")
+            Text(Constants.singUpText)
                 .padding(.vertical, 16)
                 .padding(.horizontal, 100)
                 .font(.title2.bold())
@@ -219,15 +215,15 @@ struct AuthorisationView: View {
                            selection: $movetoNextScreen) { EmptyView() }
         )
 
-        .alert("Ошибка", isPresented: $passwordAlertIsShow, actions: {
+        .alert(Constants.errorText, isPresented: $passwordAlertIsShow, actions: {
         }, message: {
-            Text("Пароль должен быть больше 6 симоволов")
+            Text(Constants.passwordErrorText)
         })
     }
 
     private var checkVerificationView: some View {
 
-        Text("Check Verification")
+        Text(Constants.checkVerification)
             .font(.title.bold())
             .foregroundStyle(.gray)
 

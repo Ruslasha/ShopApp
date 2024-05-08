@@ -10,6 +10,21 @@ import SwiftUI
 @available(iOS 16.0, *)
 struct VerificationView: View {
 
+    enum Constants {
+        static let verification = "Verification"
+        static let chevronLeft = "chevron.left"
+        static let didntReciveSms = "Didn’t receive sms"
+        static let sendSmsAgain =  "Send sms again"
+        static let fillInFromMessage = "Fill in from message"
+        static let cancelText = "Cancel"
+        static let okText = "Ok"
+        static let continueText = "Continue"
+        static let checkSmsText = "Check the SMS"
+        static let messageText = "message to get verification code"
+        static let mailText = "mail"
+        static let verificationCodeText = "Verification code"
+    }
+
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -28,17 +43,30 @@ struct VerificationView: View {
             )
 
         }
-        .navigationTitle("Verification")
+        .navigationTitle(Constants.verification)
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading:
                                 Button(action: {
             presentationMode.wrappedValue.dismiss()
         }, label: {
-            Image(systemName: "chevron.left")
+            Image(systemName: Constants.chevronLeft)
         })
                                     .foregroundStyle(.gray)
         )
     }
+
+    @ObservedObject private var viewModel = VerificationViewModel()
+    @State private var verificationTexts = ["", "", "", ""]
+    @State private var numberOneCode = ""
+    @State private var numberTwoCode = ""
+    @State private var numberThreeCode = ""
+    @State private var numberFourCode = ""
+    @State var totalChars = 0
+    @State private var lastOneCode = ""
+    @State private var lastTwoCode = ""
+    @State private var lastThreeCode = ""
+    @State private var lastFourCode = ""
+    @FocusState private var focusedField: Int?
 
     private var mainView: some View {
         VStack {
@@ -57,26 +85,23 @@ struct VerificationView: View {
 
     }
 
-    @ObservedObject private var viewModel = VerificationViewModel()
-    @State private var verificationTexts = ["", "", "", ""]
-
     private var sendSmsButton: some View {
         VStack {
-            Text("Didn’t receive sms")
+            Text(Constants.didntReciveSms)
                 .font(.system(size: 16))
                 .foregroundStyle(.gray)
                 .frame(height: 20)
             Button(action: {
                 viewModel.smsAlertIsShow = true
             }) {
-                Text("Send sms again")
+                Text(Constants.sendSmsAgain)
                     .font(.title)
                     .bold()
                     .foregroundStyle(.gray)
             }
-            .alert("Fill in from message", isPresented: $viewModel.smsAlertIsShow, actions: {
-                Button("Cancel", role: .cancel, action: {})
-                Button("Ok", action: {
+            .alert(Constants.fillInFromMessage, isPresented: $viewModel.smsAlertIsShow, actions: {
+                Button(Constants.cancelText, role: .cancel, action: {})
+                Button(Constants.okText, action: {
                     pasteSmsText(String(viewModel.smsText))
                 })
             }, message: {
@@ -100,7 +125,7 @@ struct VerificationView: View {
             Spacer()
                 .frame(height: 20)
             Button {} label: {
-                Text("Continue")
+                Text(Constants.continueText)
                     .padding(.vertical, 16)
                     .padding(.horizontal, 100)
                     .font(.title2.bold())
@@ -120,12 +145,12 @@ struct VerificationView: View {
         VStack {
             Spacer()
                 .frame(height: 20)
-            Text("Check the SMS")
+            Text(Constants.checkSmsText)
                 .font(.system(size: 20))
                 .bold()
                 .foregroundStyle(.gray)
                 .frame(height: 30)
-            Text("message to get verification code")
+            Text(Constants.messageText)
                 .font(.system(size: 16))
                 .foregroundStyle(.gray)
                 .frame(height: 20)
@@ -134,26 +159,14 @@ struct VerificationView: View {
 
     private var mailImageView: some View {
         VStack {
-            Image("mail")
+            Image(Constants.mailText)
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Verification code")
+            Text(Constants.verificationCodeText)
                 .font(.system(size: 20))
                 .foregroundStyle(.gray)
         }
     }
-
-    @State private var numberOneCode = ""
-    @State private var numberTwoCode = ""
-    @State private var numberThreeCode = ""
-    @State private var numberFourCode = ""
-    @State var totalChars = 0
-    @State private var lastOneCode = ""
-    @State private var lastTwoCode = ""
-    @State private var lastThreeCode = ""
-    @State private var lastFourCode = ""
-
-    @FocusState private var focusedField: Int?
 
     private var textFields: some View {
         VStack {
