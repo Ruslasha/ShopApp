@@ -16,7 +16,6 @@ struct UserProfileView: View {
             VStack {
                 Spacer()
                 mainView
-//                Spacer()
             }
             .frame(width: UIScreen.main.bounds.width)
         }
@@ -26,7 +25,6 @@ struct UserProfileView: View {
         VStack {
             headerProfileView
             listView
-//            Spacer()
         }
         .frame(width: UIScreen.main.bounds.width)
         .background(.white)
