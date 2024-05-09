@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 16.0, *)
 struct AuthorisationView: View {
 
     enum Constants {
@@ -39,9 +38,7 @@ struct AuthorisationView: View {
             }
             .frame(width: UIScreen.main.bounds.width)
             .background(
-                VStack {
-                    LinearGradient(colors: [Color.green.opacity(0.2), Color.green], startPoint: .leading, endPoint: .trailing)
-                }
+                LinearGradient(colors: [Color.green.opacity(0.2), Color.green], startPoint: .leading, endPoint: .trailing)
                     .ignoresSafeArea(.all, edges: .all)
             )
 
@@ -62,37 +59,28 @@ struct AuthorisationView: View {
             Spacer()
                 .frame(height: 78)
             phoneTextFieldView
-                .padding(.leading, 20)
-                .padding(.trailing, 20)
             Divider()
-                .frame(maxHeight: 1)
-                .padding(.leading, 20)
-                .padding(.trailing, 20)
             Spacer()
                 .frame(height: 24)
             passwordTextFieldView
             Divider()
-                .frame(maxHeight: 1)
-                .padding(.leading, 20)
-                .padding(.trailing, 20)
             Spacer()
                 .frame(height: 111)
             signUpButtonView
-
             Spacer()
                 .frame(height: 24)
-            Button(action: {
+            Button {
                 forgotAlertIsShow = true
-            }) {
+            } label: {
                 Text(Constants.forgotText)
                     .font(.system(size: 18))
                     .bold()
                     .foregroundStyle(.gray)
             }
-            .alert(Constants.phoneSupportText, isPresented: $forgotAlertIsShow, actions: {
-            }, message: {
+            .alert(Constants.phoneSupportText, isPresented: $forgotAlertIsShow) {
+            } message: {
                 Text(Constants.phoneSupport)
-            })
+            }
             Spacer()
                 .frame(height: 18)
             NavigationLink(destination: VerificationView()) {
@@ -102,6 +90,7 @@ struct AuthorisationView: View {
                 .frame(maxWidth: 180, maxHeight: 1)
             Spacer()
         }
+        .padding(.horizontal, 20)
         .frame(width: UIScreen.main.bounds.width)
         .background(Color.white)
         .ignoresSafeArea(.all, edges: .bottom)
@@ -109,36 +98,40 @@ struct AuthorisationView: View {
 
     private var pickerView: some View {
         HStack(spacing: 0) {
-            UnevenRoundedRectangle(cornerRadii: .init(
-                topLeading: 27.0,
-                bottomLeading: 27.0,
-                bottomTrailing: 0,
-                topTrailing: 0),
-                                   style: .continuous)
-            .stroke(.appGray, lineWidth: 2)
-            .frame(width: 150, height: 51)
-            .overlay {
-                Text(Constants.logInText)
-                    .foregroundStyle(
-                        LinearGradient(colors: [Color.green, Color.green.opacity(0.2)], startPoint: .top, endPoint: .bottom)
-                    )
-                    .font(.title2.bold())
-            }
+            if #available(iOS 16.0, *) {
+                UnevenRoundedRectangle(cornerRadii: .init(
+                    topLeading: 27.0,
+                    bottomLeading: 27.0,
+                    bottomTrailing: 0,
+                    topTrailing: 0),
+                                       style: .continuous)
+                .stroke(.appGray, lineWidth: 2)
+                .frame(width: 150, height: 51)
+                .overlay {
+                    Text(Constants.logInText)
+                        .foregroundStyle(
+                            LinearGradient(colors: [Color.green, Color.green.opacity(0.2)], startPoint: .top, endPoint: .bottom)
+                        )
+                        .font(.title2.bold())
+                }
 
-            UnevenRoundedRectangle(cornerRadii: .init(
-                topLeading: 0,
-                bottomLeading: 0,
-                bottomTrailing: 27.0,
-                topTrailing: 27.0),
-                                   style: .continuous)
-            .frame(width: 150, height: 53)
-            .foregroundStyle(.appGray)
-            .overlay {
-                Text(Constants.singUpText)
-                    .foregroundStyle(
-                        LinearGradient(colors: [Color.green, Color.green.opacity(0.2)], startPoint: .top, endPoint: .bottom)
-                    )
-                    .font(.title2.bold())
+                UnevenRoundedRectangle(cornerRadii: .init(
+                    topLeading: 0,
+                    bottomLeading: 0,
+                    bottomTrailing: 27.0,
+                    topTrailing: 27.0),
+                                       style: .continuous)
+                .frame(width: 150, height: 53)
+                .foregroundStyle(.appGray)
+                .overlay {
+                    Text(Constants.singUpText)
+                        .foregroundStyle(
+                            LinearGradient(colors: [Color.green, Color.green.opacity(0.2)], startPoint: .top, endPoint: .bottom)
+                        )
+                        .font(.title2.bold())
+                }
+            } else {
+
             }
         }
     }
@@ -146,7 +139,7 @@ struct AuthorisationView: View {
     private var phoneTextFieldView: some View {
         TextField(Constants.placeholderPhone, text: $phoneNumberText)
             .font(.title2)
-            .bold()
+            .font(Font.headline.bold())
             .onChange(of: phoneNumberText) { text in
                 phoneNumberText = viewModel.format(phone: text)
             }
@@ -159,7 +152,7 @@ struct AuthorisationView: View {
 
         HStack {
             Group {
-                if viewModel.passwordIsHide {
+                if viewModel.isPasswordHidden {
                     SecureField(Constants.placeholderDot, text: $passwordText)
                         .font(.title2.bold())
                 } else {
@@ -178,24 +171,22 @@ struct AuthorisationView: View {
                 }
             }
             Button(action: {
-                viewModel.passwordIsHide.toggle()
+                viewModel.isPasswordHidden.toggle()
             }){
-                Image(viewModel.passwordIsHide ? "invisible" : "visible")
+                Image(viewModel.isPasswordHidden ? "invisible" : "visible")
             }
         }
-        .padding(.leading, 20)
-        .padding(.trailing, 20)
+        .padding(.horizontal, 20)
 
     }
 
-    @State var movetoNextScreen: Int? = nil
+    @State var isShowingVerificationScreen = false
     private var signUpButtonView: some View {
         Button {
             if passwordText.count < 6 {
                 passwordAlertIsShow = true
-                movetoNextScreen = 0
             } else {
-                movetoNextScreen = 1
+                isShowingVerificationScreen = true
             }
         } label: {
             Text(Constants.singUpText)
@@ -210,15 +201,11 @@ struct AuthorisationView: View {
 
         }
         .cornerRadius(27)
-        .background(
-            NavigationLink(destination: VerificationView(), tag: 1,
-                           selection: $movetoNextScreen) { EmptyView() }
-        )
 
-        .alert(Constants.errorText, isPresented: $passwordAlertIsShow, actions: {
-        }, message: {
+        .alert(Constants.errorText, isPresented: $passwordAlertIsShow) {
+        } message: {
             Text(Constants.passwordErrorText)
-        })
+        }
     }
 
     private var checkVerificationView: some View {
@@ -232,9 +219,5 @@ struct AuthorisationView: View {
 }
 
 #Preview {
-    if #available(iOS 16.0, *) {
         AuthorisationView()
-    } else {
-        EmptyView()
-    }
 }

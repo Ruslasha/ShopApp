@@ -9,9 +9,9 @@ import Foundation
 
 final class AuthorisationViewModel: ObservableObject {
 
-    @Published var passwordIsHide = true
+    @Published var isPasswordHidden = true
 
-    let phoneMask = "+X(XXX)XXX-XX-XX"
+    private let phoneMask = "+X(XXX)XXX-XX-XX"
 
     func format(phone: String) -> String {
         let numbers = phone.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
