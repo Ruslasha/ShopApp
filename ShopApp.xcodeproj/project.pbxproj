@@ -11,6 +11,11 @@
 		444465762BEA8BE700ADAD85 /* VerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444465752BEA8BE700ADAD85 /* VerificationView.swift */; };
 		447FFF892BEB597400387C82 /* VerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447FFF882BEB597400387C82 /* VerificationViewModel.swift */; };
 		447FFF8C2BEBB25E00387C82 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447FFF8B2BEBB25E00387C82 /* DetailView.swift */; };
+		447FFF932BECA98700387C82 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447FFF922BECA98700387C82 /* MainTabBarView.swift */; };
+		447FFF952BECA9D800387C82 /* GoodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447FFF942BECA9D800387C82 /* GoodsView.swift */; };
+		447FFF972BECAA0000387C82 /* FiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447FFF962BECAA0000387C82 /* FiltersView.swift */; };
+		447FFF992BECAA1D00387C82 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447FFF982BECAA1D00387C82 /* UserProfileView.swift */; };
+		447FFF9C2BECAA8400387C82 /* BasketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447FFF9B2BECAA8400387C82 /* BasketView.swift */; };
 		448D076E2BE9597C007BC6A7 /* ShopAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448D076D2BE9597C007BC6A7 /* ShopAppApp.swift */; };
 		448D07702BE9597C007BC6A7 /* GetStartedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448D076F2BE9597C007BC6A7 /* GetStartedView.swift */; };
 		448D07722BE9597E007BC6A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 448D07712BE9597E007BC6A7 /* Assets.xcassets */; };
@@ -23,6 +28,11 @@
 		444465752BEA8BE700ADAD85 /* VerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationView.swift; sourceTree = "<group>"; };
 		447FFF882BEB597400387C82 /* VerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationViewModel.swift; sourceTree = "<group>"; };
 		447FFF8B2BEBB25E00387C82 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		447FFF922BECA98700387C82 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
+		447FFF942BECA9D800387C82 /* GoodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodsView.swift; sourceTree = "<group>"; };
+		447FFF962BECAA0000387C82 /* FiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersView.swift; sourceTree = "<group>"; };
+		447FFF982BECAA1D00387C82 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		447FFF9B2BECAA8400387C82 /* BasketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketView.swift; sourceTree = "<group>"; };
 		448D076A2BE9597C007BC6A7 /* ShopApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShopApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		448D076D2BE9597C007BC6A7 /* ShopAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopAppApp.swift; sourceTree = "<group>"; };
 		448D076F2BE9597C007BC6A7 /* GetStartedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedView.swift; sourceTree = "<group>"; };
@@ -76,6 +86,38 @@
 			path = DetailModule;
 			sourceTree = "<group>";
 		};
+		447FFF8F2BECA8B800387C82 /* UserProfileModule */ = {
+			isa = PBXGroup;
+			children = (
+				447FFF982BECAA1D00387C82 /* UserProfileView.swift */,
+			);
+			path = UserProfileModule;
+			sourceTree = "<group>";
+		};
+		447FFF902BECA8C500387C82 /* GoodsModule */ = {
+			isa = PBXGroup;
+			children = (
+				447FFF942BECA9D800387C82 /* GoodsView.swift */,
+			);
+			path = GoodsModule;
+			sourceTree = "<group>";
+		};
+		447FFF912BECA8E100387C82 /* FiltersModule */ = {
+			isa = PBXGroup;
+			children = (
+				447FFF962BECAA0000387C82 /* FiltersView.swift */,
+			);
+			path = FiltersModule;
+			sourceTree = "<group>";
+		};
+		447FFF9A2BECAA7700387C82 /* BasketModule */ = {
+			isa = PBXGroup;
+			children = (
+				447FFF9B2BECAA8400387C82 /* BasketView.swift */,
+			);
+			path = BasketModule;
+			sourceTree = "<group>";
+		};
 		448D07612BE9597C007BC6A7 = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +137,10 @@
 		448D076C2BE9597C007BC6A7 /* ShopApp */ = {
 			isa = PBXGroup;
 			children = (
+				447FFF9A2BECAA7700387C82 /* BasketModule */,
+				447FFF912BECA8E100387C82 /* FiltersModule */,
+				447FFF902BECA8C500387C82 /* GoodsModule */,
+				447FFF8F2BECA8B800387C82 /* UserProfileModule */,
 				447FFF8A2BEBB24500387C82 /* DetailModule */,
 				444465742BEA8BD500ADAD85 /* VerificationModule */,
 				443C851D2BEA39A2002BCB28 /* AuthorisationModule */,
@@ -102,6 +148,7 @@
 				448D07712BE9597E007BC6A7 /* Assets.xcassets */,
 				448D076D2BE9597C007BC6A7 /* ShopAppApp.swift */,
 				448D07732BE9597E007BC6A7 /* Preview Content */,
+				447FFF922BECA98700387C82 /* MainTabBarView.swift */,
 			);
 			path = ShopApp;
 			sourceTree = "<group>";
@@ -184,10 +231,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				447FFF9C2BECAA8400387C82 /* BasketView.swift in Sources */,
 				444465762BEA8BE700ADAD85 /* VerificationView.swift in Sources */,
 				448D077C2BE96CDD007BC6A7 /* AuthorisationView.swift in Sources */,
 				444465732BEA7FBE00ADAD85 /* AuthorisationViewModel.swift in Sources */,
+				447FFF932BECA98700387C82 /* MainTabBarView.swift in Sources */,
+				447FFF972BECAA0000387C82 /* FiltersView.swift in Sources */,
+				447FFF952BECA9D800387C82 /* GoodsView.swift in Sources */,
 				447FFF8C2BEBB25E00387C82 /* DetailView.swift in Sources */,
+				447FFF992BECAA1D00387C82 /* UserProfileView.swift in Sources */,
 				447FFF892BEB597400387C82 /* VerificationViewModel.swift in Sources */,
 				448D07702BE9597C007BC6A7 /* GetStartedView.swift in Sources */,
 				448D076E2BE9597C007BC6A7 /* ShopAppApp.swift in Sources */,

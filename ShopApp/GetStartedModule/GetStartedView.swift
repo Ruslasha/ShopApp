@@ -57,7 +57,7 @@ struct GetStartedView: View {
                 .frame(width: 300, height: 55)
         }
         .fullScreenCover(isPresented: $isShowDetail, content: {
-            DetailView()
+            MainTabBarView()
         })
         .background(Color.white)
         .clipShape(Capsule())
