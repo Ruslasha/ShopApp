@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "goodFirst.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
