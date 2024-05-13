@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 16.0, *)
 struct DetailView: View {
 
     private enum Constants {
@@ -66,7 +65,7 @@ struct DetailView: View {
                                 Capsule()
                                     .foregroundStyle(.white)
                             )
-                            .shadow(radius: 10, y: 5)
+                            .shadow(color: .black.opacity(0.25), radius: 4, y: 4)
                     }
         }
     }
@@ -84,27 +83,31 @@ struct DetailView: View {
                     .font(.title3)
                     .bold()
                 HStack(alignment: .top) {
-                    ZStack {
-                        if reviewText.isEmpty {
-                            TextEditor(text: $emptyText)
-                                .font(.body)
-                                .foregroundColor(.appGray)
-                                .disabled(true)
-                        }
-                        TextEditor(text: $reviewText)
-                            .font(.body)
-                            .foregroundColor(.white)
-                            .onChange(of: reviewText) { newText in
-                                totalChars = newText.count
-                                if totalChars <= Constants.maxCharacters {
-                                    lastText = newText
-                                } else {
-                                    reviewText = lastText
-                                }
+                    if #available(iOS 16.0, *) {
+                        ZStack {
+                            if reviewText.isEmpty {
+                                TextEditor(text: $emptyText)
+                                    .font(.body)
+                                    .foregroundColor(.appGray)
+                                    .disabled(true)
                             }
-                            .focused($reviewFocus)
+                            TextEditor(text: $reviewText)
+                                .font(.body)
+                                .foregroundColor(.white)
+                                .onChange(of: reviewText) { newText in
+                                    totalChars = newText.count
+                                    if totalChars <= Constants.maxCharacters {
+                                        lastText = newText
+                                    } else {
+                                        reviewText = lastText
+                                    }
+                                }
+                                .focused($reviewFocus)
+                        }
+                        .scrollContentBackground(.hidden)
+                    } else {
+                        // Fallback on earlier versions
                     }
-                    .scrollContentBackground(.hidden)
                     if !reviewText.isEmpty {
                         Text("\(totalChars)/\(Constants.maxCharacters)")
                     }
@@ -134,7 +137,6 @@ struct DetailView: View {
                 .aspectRatio(contentMode: .fit)
         }
         .padding()
-        .foregroundStyle(.appGray)
         .font(.title2.bold())
         .frame(height: 250)
     }
@@ -153,12 +155,10 @@ struct DetailView: View {
                 )
         }
         .offset(x: 10)
-        .foregroundStyle(.appGray)
         .font(.title2.bold())
     }
 }
 
-@available(iOS 16.0, *)
 #Preview {
     DetailView()
 }

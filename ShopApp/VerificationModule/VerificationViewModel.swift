@@ -9,5 +9,5 @@ import Foundation
 
 final class VerificationViewModel: ObservableObject {
     @Published var smsAlertIsShow = false
-    var smsText = Int.random(in: 999...9999)
+    var smsText = Int.random(in: 1000...9999)
 }
